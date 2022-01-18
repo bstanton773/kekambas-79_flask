@@ -13,7 +13,7 @@ def index():
 def name():
     my_name = 'Brian'
 
-    return f"Hello {my_name}"
+    return render_template('name.html', name=my_name)
 
 
 @app.route('/test')
