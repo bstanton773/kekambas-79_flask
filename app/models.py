@@ -40,6 +40,9 @@ class Product(db.Model):
     def __repr__(self):
         return f"<Product|{self.name}>"
 
+    def save(self):
+        db.session.commit()
+
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
