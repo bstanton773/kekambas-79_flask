@@ -2,19 +2,12 @@ from app import app
 from flask import render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required
 from app.forms import RegisterForm, LoginForm
-from app.models import User
+from app.models import User, Product
 
 @app.route('/')
 def index():
-    my_name = 'Brian'
-    my_city = 'Chicago'
-    colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet', 'black', 'magenta', 'pink']
-    person = {
-        'name': 'Ferris Bueller',
-        'age': 18,
-        'best_friend': 'Cameron'
-    }
-    return render_template('index.html', name=my_name, city=my_city, colors=colors, person=person)
+    products = Product.query.all()
+    return render_template('index.html', products=products)
 
 
 @app.route('/name')
