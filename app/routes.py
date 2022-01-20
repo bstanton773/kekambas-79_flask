@@ -1,8 +1,8 @@
 from app import app
 from flask import render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required
-from app.forms import RegisterForm, LoginForm
-from app.models import User, Product
+from app.forms import RegisterForm, LoginForm, ProductForm
+from app.models import User, Product, Category
 
 @app.route('/')
 def index():
@@ -75,6 +75,16 @@ def logout():
 
 
 @app.route('/products/<int:prod_id>')
+@login_required
 def product_info(prod_id):
     product = Product.query.get_or_404(prod_id)
     return render_template('product.html', product=product)
+
+
+@app.route('/products/<int:prod_id>/edit')
+@login_required
+def edit_product(prod_id):
+    product = Product.query.get_or_404(prod_id)
+    form = ProductForm()
+    form.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
+    return render_template('edit_product.html', product=product, form=form)
