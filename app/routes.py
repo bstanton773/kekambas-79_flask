@@ -107,3 +107,11 @@ def edit_product(prod_id):
         return redirect(url_for('product_info', prod_id=product.id))
 
     return render_template('edit_product.html', product=product, form=form)
+
+
+@app.route('/products/<int:prod_id>/delete')
+def delete_product(prod_id):
+    product = Product.query.get_or_404(prod_id)
+    product.delete()
+    flash(f'{product.name} has been deleted', 'danger')
+    return redirect(url_for('index'))
