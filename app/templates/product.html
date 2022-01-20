@@ -12,4 +12,21 @@
     </div>
 </div>
 
+<hr>
+<h4>Other Products in the {{ product.category.name }} category:</h4>
+<div class="row">
+    {% for p in product.category.products %}
+        {% if p.id != product.id %}
+            <div class="col-md-4">
+                <a href="{{ url_for('product_info', prod_id=p.id) }}">
+                    <div class="card">
+                        <img src="{{ p.image_url }}" class="card-img-top" alt="{{ p.name }}">
+                        <h5 class="card-title">{{ p.name }}</h5>
+                    </div>
+                </a>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
 {% endblock %}
