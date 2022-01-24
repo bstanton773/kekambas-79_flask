@@ -16,6 +16,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(256), nullable=False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     is_admin = db.Column(db.Boolean, default=False)
+    first_name = db.Column(db.String(50))
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
