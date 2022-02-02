@@ -38,6 +38,7 @@ class User(db.Model, UserMixin):
         return {
             'id': self.id,
             'username': self.username,
+            'email': self.email,
             'date_created': self.date_created,
             'is_admin': self.is_admin,
             'first_name': self.first_name
@@ -51,6 +52,20 @@ class User(db.Model, UserMixin):
         self.token_expiration = now + timedelta(seconds=expires_in)
         db.session.commit()
         return self.token
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self, data):
+        for field in data:
+            if field not in {'username', 'email', 'password', 'is_admin', 'first_name'}:
+                continue
+            if field == 'password':
+                setattr(self, field, generate_password_hash(data[field]))
+            else:
+                setattr(self, field, data[field])
+        db.session.commit()
         
 
 
