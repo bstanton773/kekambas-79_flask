@@ -1,5 +1,7 @@
+import os
+import base64
 from app import db, login
-from datetime import datetime
+from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
@@ -17,6 +19,8 @@ class User(db.Model, UserMixin):
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     is_admin = db.Column(db.Boolean, default=False)
     first_name = db.Column(db.String(50))
+    token = db.Column(db.String(32), unique=True, index=True)
+    token_expiration = db.Column(db.DateTime)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -38,6 +42,16 @@ class User(db.Model, UserMixin):
             'is_admin': self.is_admin,
             'first_name': self.first_name
         }
+
+    def get_token(self, expires_in=3600):
+        now = datetime.utcnow()
+        if self.token and self.token_expiration > now + timedelta(minutes=1):
+            return self.token
+        self.token = base64.b64encode(os.urandom(24)).decode('utf-8')
+        self.token_expiration = now + timedelta(seconds=expires_in)
+        db.session.commit()
+        return self.token
+        
 
 
 class Product(db.Model):
