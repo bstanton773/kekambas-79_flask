@@ -30,6 +30,15 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'date_created': self.date_created,
+            'is_admin': self.is_admin,
+            'first_name': self.first_name
+        }
+
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
