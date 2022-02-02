@@ -1,7 +1,7 @@
 from . import bp as api
 from flask import jsonify, request
 from app.models import User
-from .auth import basic_auth
+from .auth import basic_auth, token_auth
 
 # Get token
 @api.route('/token', methods=['POST'])
@@ -52,9 +52,15 @@ def create_user():
     return jsonify(new_user.to_dict())
 
 # Update a user by id
-
+@api.route('/users/<id>', methods=['PUT'])
+@token_auth.login_required
+def updated_user(id):
+    pass
 
 
 # Delete a user by id
-
+@api.route('/users/<id>', methods=['DELETE'])
+@token_auth.login_required
+def delete_user(id):
+    pass
 
