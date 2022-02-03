@@ -87,7 +87,8 @@ def get_products():
 # Get one Product by id
 @api.route('/products/<int:id>')
 def get_product(id):
-    pass
+    product = Product.query.get_or_404(id)
+    return jsonify(product.to_dict())
 
 
 # Update a Product by id
