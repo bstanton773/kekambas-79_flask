@@ -95,7 +95,13 @@ def get_product(id):
 @api.route('/products/<int:id>', methods=['PUT'])
 @token_auth.login_required
 def update_product(id):
-    return str(id)
+    user = token_auth.current_user()
+    if not user.is_admin:
+        return jsonify({'error': 'You are not allowed to update products'}), 403
+    data = request.json
+    product = Product.query.get_or_404(id)
+    product.update(data)
+    return jsonify(product.to_dict())
 
 
 # Delete a Product by id
