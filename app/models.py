@@ -87,6 +87,16 @@ class Product(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'price': self.price,
+            'image_url': self.image_url,
+            'date_created': self.date_created,
+            'category_id': self.category_id
+        }
+
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)

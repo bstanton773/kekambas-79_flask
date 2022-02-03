@@ -1,6 +1,7 @@
+from xml.sax.handler import property_dom_node
 from . import bp as api
 from flask import jsonify, request
-from app.models import User
+from app.models import User, Product
 from .auth import basic_auth, token_auth
 
 # Get token
@@ -74,4 +75,29 @@ def delete_user(id):
     user_to_delete.delete()
     return jsonify({}), 204
 
+
+
+# Get all Products
+@api.route('/products')
+def get_products():
+    products = Product.query.all()
+    return jsonify([p.to_dict() for p in products])
+
+
+# Get one Product by id
+@api.route('/products/<int:id>')
+def get_product(id):
+    pass
+
+
+# Update a Product by id
+@api.route('/products/<int:id>', methods=['PUT'])
+def update_product(id):
+    pass
+
+
+# Delete a Product by id
+@api.route('/products/<int:id>', methods=['DELETE'])
+def delete_product(id):
+    pass
 
