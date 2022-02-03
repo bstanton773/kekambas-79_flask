@@ -93,12 +93,19 @@ def get_product(id):
 
 # Update a Product by id
 @api.route('/products/<int:id>', methods=['PUT'])
+@token_auth.login_required
 def update_product(id):
-    pass
+    return str(id)
 
 
 # Delete a Product by id
 @api.route('/products/<int:id>', methods=['DELETE'])
+@token_auth.login_required
 def delete_product(id):
-    pass
+    user = token_auth.current_user()
+    if not user.is_admin:
+        return jsonify({'error': 'You are not allowed to delete products'}), 403
+    product = Product.query.get_or_404(id)
+    product.delete()
+    return jsonify({}), 204
 
