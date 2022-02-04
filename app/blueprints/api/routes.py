@@ -113,5 +113,5 @@ def delete_product(id):
         return jsonify({'error': 'You are not allowed to delete products'}), 403
     product = Product.query.get_or_404(id)
     product.delete()
-    return jsonify({}), 204
+    return jsonify({'success': 'You have successfully deleted the product'})
 
